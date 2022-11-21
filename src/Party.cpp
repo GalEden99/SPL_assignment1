@@ -27,12 +27,14 @@ const string & Party::getName() const
     return mName;
 }
 
-bool::checkOffers(int partyId) const
+bool::checkOffers(Party checkedParty, int partyId) 
 {
-    ///
-    for (int i=0; i<)
+    
+    for (int i=0; i<checkedParty.getmOffers().size(); i++){
+        //
+    }
     return true;
-    ///
+    
 }
 
 void Party::step(Simulation &s)

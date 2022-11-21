@@ -25,22 +25,24 @@ void Agent::step(Simulation &sim)
     for (int i=0; i<numParties; i++){
         // checking if i is a neighbor
         if (sim.getGraph().getEdgeWeight(mPartyId, i) != 0) {
+            
+            Party checkedParty = sim.getParty(i);
 
             // checking if i status is Waiting
-            if (sim.getParty(i).getState() == Waiting){
+            if (checkedParty.getState() == Waiting){
 
                 // add to mRelevantParties
-                mRelevantParties.push_back(sim.getParty(i));
+                mRelevantParties.push_back(checkedParty);
             }
             
             // checking if i status is CollectingOffers
-            else if (sim.getParty(i).getState() == CollectingOffers)
-            {
+            else if (checkedParty.getState() == CollectingOffers)
+            {   
 
-                if (!sim.getParty(i).checkOffers(this)){
+                if (!checkedParty.checkOffers(checkedParty, mPartyId)){
 
                     // add to mRelevantParties
-                    mRelevantParties.push_back(sim.getParty(i));
+                    mRelevantParties.push_back(checkedParty);
 
                 }
             }

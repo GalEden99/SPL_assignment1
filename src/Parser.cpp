@@ -23,7 +23,6 @@ Agent Parser::parseAgent(const json &jAgent, int agentId)
     int partyId = jAgent["party_id"];
     return Agent(agentId, partyId, sp);
 }
-
 Party Parser::parseParty(const json &jParty, const int id)
 {
     JoinPolicy *jp;
