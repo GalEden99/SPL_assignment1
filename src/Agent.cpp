@@ -1,5 +1,7 @@
 #include "Agent.h"
 #include "Simulation.h"
+#include "SelectionPolicy.h"
+#include "Party.h"
 
 Agent::Agent(int agentId, int partyId, SelectionPolicy *selectionPolicy) : 
 mAgentId(agentId), mPartyId(partyId), mSelectionPolicy(selectionPolicy), mRelevantParties(0)
@@ -20,6 +22,7 @@ int Agent::getPartyId() const
 void Agent::step(Simulation &sim)
 {
     
+    // building the mRelevantParties parties' vector to make an offer to
     int numParties = sim.getGraph().getNumVertices();
     
     for (int i=0; i<numParties; i++){
@@ -39,8 +42,8 @@ void Agent::step(Simulation &sim)
             else if (checkedParty.getState() == CollectingOffers)
             {   
 
-                if (!checkedParty.checkOffers(checkedParty, mPartyId)){
-
+                if (!checkedParty.checkOffers(checkedParty, mPartyId)){ //checkOffers לממש את 
+                    
                     // add to mRelevantParties
                     mRelevantParties.push_back(checkedParty);
 
@@ -49,4 +52,12 @@ void Agent::step(Simulation &sim)
 
         }
     }
+    
+    // activing selection polity and getting the selected party
+    Party *selectedParty = mSelectionPolicy->Select(mPartyId, mRelevantParties, sim);
+
+    // adding our agent to the offers vectors of the selected party
+    selectedParty->addOffer(*this);
+
+
 }

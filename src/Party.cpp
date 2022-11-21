@@ -27,10 +27,22 @@ const string & Party::getName() const
     return mName;
 }
 
-bool::checkOffers(Party checkedParty, int partyId) 
+const vector<Agent> Party::getOffers() const{
+    return mOffers;
+}
+
+int Party::getId() const {
+    return mId;
+}
+
+void Party::addOffer(Agent &newAgentOffer){
+    mOffers.push_back(newAgentOffer);
+}
+
+bool Party::checkOffers(Party checkedParty, int partyId) 
 {
     
-    for (int i=0; i<checkedParty.getmOffers().size(); i++){
+    for (int i=0; i<checkedParty.getOffers().size(); i++){
         //
     }
     return true;
