@@ -4,16 +4,23 @@
 
 class JoinPolicy {
     public:
-        JoinPolicy();
-        virtual Agent Join();
+        JoinPolicy()=default;
+        virtual Agent Join()=0;
+        virtual ~JoinPolicy() = default;
 };
 
 class MandatesJoinPolicy : public JoinPolicy {
     public:
-        MandatesJoinPolicy();
+        virtual Agent Join();
+        virtual ~MandatesJoinPolicy() = default;
+
 };
 
 class LastOfferJoinPolicy : public JoinPolicy {
     public:
-        LastOfferJoinPolicy();
+        virtual Agent Join();
+        virtual ~LastOfferJoinPolicy() = default;
+        
+
+        
 };
