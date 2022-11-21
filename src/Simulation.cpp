@@ -7,7 +7,19 @@ Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgen
 
 void Simulation::step()
 {
-    // TODO: implement this method
+    // apply Party::step() for each party in mGraph
+    for (int i=0; i<mGraph.getNumVertices(); i++){
+        Party currParty = mGraph.getParty(i);
+        currParty.step(*this);
+    }
+
+    // apply Agent::step() for each agent in mAgents
+    for (int i=0; i<mAgents.size(); i++){
+        Agent currAgent = mAgents[i];
+        currAgent.step(*this);
+
+    }
+
 }
 
 bool Simulation::shouldTerminate() const

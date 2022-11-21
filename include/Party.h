@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "Agent.h"
 
 using std::string;
 
@@ -23,6 +24,9 @@ public:
     int getMandates() const;
     void step(Simulation &s);
     const string &getName() const;
+    const vector<Agent> getmOffers() const;
+    bool checkOffers(int partyId) const;
+
 
 private:
     int mId;
@@ -30,4 +34,7 @@ private:
     int mMandates;
     JoinPolicy *mJoinPolicy;
     State mState;
+
+    int mIteration;
+    vector<Agent> mOffers;
 };

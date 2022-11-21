@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Graph.h"
+#include "Party.h"
 
 class SelectionPolicy;
 
@@ -18,4 +19,6 @@ private:
     int mAgentId;
     int mPartyId;
     SelectionPolicy *mSelectionPolicy;
+
+    vector<Party> mRelevantParties;
 };
