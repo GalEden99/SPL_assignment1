@@ -16,25 +16,29 @@ enum State
 
 class Party
 {
-public:
-    Party(int id, string name, int mandates, JoinPolicy *); 
+    public:
+        Party(int id, string name, int mandates, JoinPolicy *); 
 
-    State getState() const;
-    void setState(State state);
-    int getMandates() const;
-    void step(Simulation &s);
-    const string &getName() const;
-    const vector<Agent> getmOffers() const;
-    bool checkOffers(int partyId) const;
+        State getState() const;
+        void setState(State state);
+        int getMandates() const;
+        void step(Simulation &s);
+        const string &getName() const;
+        const vector<Agent> getOffers() const;
+
+        bool checkOffers(Party checkedParty, int partyId);
+        int getId() const;
+        void addOffer(Agent &newAgentOffer);
 
 
-private:
-    int mId;
-    string mName;
-    int mMandates;
-    JoinPolicy *mJoinPolicy;
-    State mState;
 
-    int mIteration;
-    vector<Agent> mOffers;
+    private:
+        int mId;
+        string mName;
+        int mMandates;
+        JoinPolicy *mJoinPolicy;
+        State mState;
+
+        int mIteration;
+        vector<Agent> mOffers;
 };
