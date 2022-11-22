@@ -3,6 +3,8 @@
 #include "Party.h"
 
 using std::vector;
+class Simulation;
+class Agent;
 
 class Graph
 {
