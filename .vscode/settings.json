@@ -5,5 +5,8 @@
             "binaryPath": "/home/spl211/SPL23_Assignment1/Skeleton/bin/cRace",
             "binaryArgs": ["../tests/01.json"]
         }
-    ]
+    ],
+    "files.associations": {
+        "new": "cpp"
+    }
 }

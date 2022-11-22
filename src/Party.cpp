@@ -169,10 +169,10 @@ Agent* LastOfferJoinPolicy::Join(vector<Agent> &mOffers, Simulation &sim){
     return lastOfferAgent;
 }
 
-LastOfferJoinPolicy * LastOfferJoinPolicy:: clone(){
-    return new LastOfferJoinPolicy(*this);
-}
-
 MandatesJoinPolicy * MandatesJoinPolicy:: clone(){
     return new MandatesJoinPolicy(*this);
+}
+
+LastOfferJoinPolicy * LastOfferJoinPolicy:: clone(){
+    return new LastOfferJoinPolicy(*this);
 }

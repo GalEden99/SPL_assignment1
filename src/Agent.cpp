@@ -61,7 +61,7 @@ Agent &Agent :: operator=(const Agent &other){
 }
 
 //distractor
-Agent :: ~Agent(){
+Agent::~Agent(){
 if(mSelectionPolicy){delete mSelectionPolicy;}
 }
 
@@ -173,3 +173,10 @@ Party* EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelev
 
 
 
+EdgeWeightSelectionPolicy * EdgeWeightSelectionPolicy:: clone(){
+    return new EdgeWeightSelectionPolicy(*this);
+}
+
+MandatesSelectionPolicy * MandatesSelectionPolicy:: clone(){
+    return new MandatesSelectionPolicy(*this);
+}

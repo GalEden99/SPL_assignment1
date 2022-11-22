@@ -25,6 +25,7 @@ class Party
         Party(Party &&);
         Party &operator=(Party &&other);
         Party &operator=(const Party &other);
+        ~Party();
 
         State getState() const;
         void setState(State state);
