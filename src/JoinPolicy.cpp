@@ -1,31 +1,30 @@
-#include "JoinPolicy.h"
-#include "Agent.h"
-#include "Simulation.h"
-#include "Party.h"
+// #include "JoinPolicy.h"
+// #include "Agent.h"
+// #include "Simulation.h"
+// #include "Party.h"
 
-const Agent* MandatesJoinPolicy::Join(vector<Agent> &mOffers, Simulation &sim) const{
-    int maxMandates = -1;
-    Agent *maxMandatesAgent = 0;
-
-
-    for (int i=0; i<mOffers.size(); i++){
-
-        int currPartyId = mOffers[i].getPartyId();
-        Party currParty = sim.getParty(currPartyId); // לבדוק האם רפרנס
-
-        // להוסיף קלאס של קואליציה ולעדכן בו את כמות המנדטים הכוללת ולפי זה לבחור את הסוכן הרלוונטי מחר 
-
-        if (maxMandates<currParty.getMandates()){
-            maxMandates = currParty.getMandates();
-            maxMandatesAgent = &mOffers[i];
-        }
-    }
-
-    return maxMandatesAgent;
-
-}
+// Agent* MandatesJoinPolicy::Join(vector<Agent> &mOffers, Simulation &sim){
+//     Agent *bestOfferAgent = 0;
+//     int maxMandates = 0;
+//     for (int i=0; i<mOffers.size(); i++){
+//         if (maxMandates<sim.getCoalitionSize()[i]){
+//             maxMandates = sim.getCoalitionSize()[i];
+//             bestOfferAgent = &mOffers[i];
+//         }
+//     }
+//     return bestOfferAgent;
+// }
 
 
-Agent* LastOfferJoinPolicy::Join(vector<Agent> &mOffers, Simulation &sim){
-    
-}
+// Agent* LastOfferJoinPolicy::Join(vector<Agent> &mOffers, Simulation &sim){
+//     Agent *lastOfferAgent = &mOffers[mOffers.size()-1];
+//     return lastOfferAgent;
+// }
+
+// LastOfferJoinPolicy * LastOfferJoinPolicy:: clone(){
+//     return new LastOfferJoinPolicy(*this);
+// }
+
+// MandatesJoinPolicy * MandatesJoinPolicy:: clone(){
+//     return new MandatesJoinPolicy(*this);
+// }
