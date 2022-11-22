@@ -19,6 +19,7 @@ public:
     Agent(Agent &&);
     Agent &operator=(Agent &&other);
     Agent &operator=(const Agent &other);
+    ~Agent();
 
     int getPartyId() const;
     int getId() const;
