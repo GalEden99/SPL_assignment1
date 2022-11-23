@@ -7,6 +7,6 @@
         }
     ],
     "files.associations": {
-        "new": "cpp"
+        "iostream": "cpp"
     }
 }

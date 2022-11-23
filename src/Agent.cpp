@@ -62,7 +62,10 @@ Agent &Agent :: operator=(const Agent &other){
 
 //distractor
 Agent::~Agent(){
-if(mSelectionPolicy){delete mSelectionPolicy;}
+    if(mSelectionPolicy){
+        delete mSelectionPolicy;
+        mSelectionPolicy = nullptr;
+        }
 }
 
 
@@ -108,7 +111,7 @@ void Agent::step(Simulation &sim)
             if (checkedParty.getState() == Waiting){
 
                 // add to mRelevantParties
-                mRelevantParties.push_back(checkedParty);
+                 mRelevantParties.push_back(checkedParty);
             }
             
             // checking if i status is CollectingOffers
@@ -174,9 +177,9 @@ Party* EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelev
 
 
 EdgeWeightSelectionPolicy * EdgeWeightSelectionPolicy:: clone(){
-    return new EdgeWeightSelectionPolicy(*this);
+    return new EdgeWeightSelectionPolicy;
 }
 
 MandatesSelectionPolicy * MandatesSelectionPolicy:: clone(){
-    return new MandatesSelectionPolicy(*this);
+    return new MandatesSelectionPolicy;
 }

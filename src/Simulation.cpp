@@ -9,14 +9,25 @@ Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgen
     int tempSize = mAgents.size();
     for (int i=0; i<tempSize; i++){
         mAgents[i].setCoalitionId(i);
-        int cuurAgentPartyId = mAgents[i].getPartyId();
-        mCoalitionSize[i] = graph.getParty(cuurAgentPartyId).getMandates();
+        int currAgentPartyId = mAgents[i].getPartyId();
+        Party currAgentParty = mGraph.getParty(currAgentPartyId);
+        int newMandates = currAgentParty.getMandates();
+        mCoalitionSize.push_back(newMandates);
     }
 }
 
 void Simulation::step()
 {
-    // apply Party::step() for each party in mGraph
+    // updating the agents' coalition number
+    int size = mAgents.size();
+    for (int i=0; i<size; i++){
+        int currAgentCoalitionId = mAgents[i].getCoalitionId();
+        if (currAgentCoalitionId == -1){
+            mAgents[i].setCoalitionId(i);
+        }
+    }
+
+    // apply Party::step() for each party in mGraph // do nothing until the party reach the state Joined
     int tempSize = mGraph.getNumVertices();
     for (int i=0; i<tempSize; i++){
         Party currParty = mGraph.getParty(i);
