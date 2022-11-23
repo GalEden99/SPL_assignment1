@@ -11,14 +11,13 @@ Party::Party(int id, string name, int mandates, JoinPolicy *jp) :
  mId(id), mName(name), mMandates(mandates), mJoinPolicy(jp), mState(Waiting){}
 
 // copy cunstractor
-Party::Party(const Party &other ):mId(other.mId), mName(other.mName), mMandates(other.mMandates), mJoinPolicy(other.mJoinPolicy), mState(other.mState){
+Party::Party(const Party &other ):mId(other.mId), mName(other.mName), mMandates(other.mMandates), mJoinPolicy(other.mJoinPolicy->clone()), mState(other.mState){
         mIteration=other.mIteration;
         //deep copy of vector
         int OtherSize = other.mOffers.size();
         for(int i = 0; i<OtherSize;i++){
             mOffers.push_back(other.mOffers[i]);
         }
-        mJoinPolicy = other.mJoinPolicy->clone();
         
 }
 
@@ -35,7 +34,7 @@ Party &Party :: operator=(Party &&other){
     mId = other.mId;
     mName = other.mName;
     mMandates = other.mMandates;
-    *mJoinPolicy = *other.mJoinPolicy;
+    mJoinPolicy = other.mJoinPolicy;
     mState = other.mState;
     mIteration = other.mIteration;
     mOffers = other.mOffers;
@@ -44,7 +43,7 @@ Party &Party :: operator=(Party &&other){
     return *this;
 }
 
-// copy assignment cunstractor
+// copy assignment 
 Party &Party :: operator=(const Party &other){
     if(this!=&other){
         mId = other.mId;
@@ -64,7 +63,10 @@ Party &Party :: operator=(const Party &other){
 
 //distractor
 Party:: ~Party(){
-if(mJoinPolicy){delete mJoinPolicy;}
+    if(mJoinPolicy){
+        delete mJoinPolicy;
+        mJoinPolicy = nullptr;
+        }
 }
 
 
@@ -144,7 +146,7 @@ void Party::step(Simulation &s)
     }
 
     
-}
+ }
 
 
 
@@ -170,9 +172,9 @@ Agent* LastOfferJoinPolicy::Join(vector<Agent> &mOffers, Simulation &sim){
 }
 
 MandatesJoinPolicy * MandatesJoinPolicy:: clone(){
-    return new MandatesJoinPolicy(*this);
+    return new MandatesJoinPolicy;
 }
 
 LastOfferJoinPolicy * LastOfferJoinPolicy:: clone(){
-    return new LastOfferJoinPolicy(*this);
+    return new LastOfferJoinPolicy;
 }
