@@ -15,6 +15,7 @@ public:
     int getNumVertices() const;
     const Party &getParty(int partyId) const;
     void addOffer(int selectedPartyId, Agent& newAgentOffer);
+    void partiesStep(Simulation &);
 
 private:
     vector<Party> mVertices;

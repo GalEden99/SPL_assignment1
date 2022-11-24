@@ -20,31 +20,19 @@ Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgen
 
 void Simulation::step()
 {
-    // // updating the agents' coalition number
-    // int size = mAgents.size();
-    // for (int i=0; i<size; i++){
-    //     int currAgentCoalitionId = mAgents[i].getCoalitionId();
-    //     if (currAgentCoalitionId == -1){
-    //         mAgents[i].setCoalitionId(i);
-    //     }
-    // }
+    auto &temp = *this;
 
-    // apply Party::step() for each party in mGraph // do nothing until the party reach the state Joined
-    int tempSize = mGraph.getNumVertices();
-    for (int i=0; i<tempSize; i++){
-        Party currParty = mGraph.getParty(i);
-        //Simulation mSim = this;
-        auto &temp = *this;
-        currParty.step(temp);
-    }
+    mGraph.partiesStep(temp);
 
     // apply Agent::step() for each agent in mAgents
-    tempSize = mAgents.size();
+    int tempSize = mAgents.size();
     for (int i=0; i<tempSize; i++){
-        Agent currAgent = mAgents[i];
-        currAgent.step(*this);
-
+        // Agent currAgent = mAgents[i];
+        // currAgent.step(*this);
+        mAgents[i].step(temp);
     }
+
+
 
 }
 
@@ -58,19 +46,20 @@ bool Simulation::shouldTerminate() const
         }
     }
 
-    //checking if all the parties joined a coalition 
-    bool allJoined = true; 
-    for (int i=0; i<getGraph().getNumVertices(); i++){
-        if (getGraph().getParty(i).getState() != Joined ){
-            allJoined = false;
+        //checking if all the parties joined a coalition 
+        bool allJoined = true; 
+        for (int i=0; i<getGraph().getNumVertices(); i++){
+            if (getGraph().getParty(i).getState() != Joined ){
+                allJoined = false;
+            }
         }
-    }
 
-    if (allJoined == true){
-        return true;
-    }
+        if (allJoined == true){
+            return true;
+        }
 
-    return false;
+        return false;
+    // return mAgents.size() == mGraph.getNumVertices();
 }
 
 const Graph &Simulation::getGraph() const
@@ -99,11 +88,12 @@ const Party &Simulation::getParty(int partyId) const
 }
 
 void Simulation::addAgent(Agent newAgent){
-    GetAgents().push_back(newAgent);
+    mAgents.push_back(newAgent);
 }
 
 void Simulation::updateCoalitionSize(int coalitionId, int mMandates){
-    getCoalitionSize()[coalitionId] =+ mMandates;
+    // getCoalitionSize()[coalitionId] =+ mMandates;
+    mCoalitionSize[coalitionId] += mMandates;
 }
 
 vector<int> Simulation::getCoalitionSize(){
@@ -117,7 +107,7 @@ void Simulation::addOffer(int selectedPartyId, Agent& newAgentOffer){
 
 bool Simulation::checkOffers(int partyId, int coalitionId) 
 {
-    //vector<int> coalitionParties = getPartiesByCoalitions()[coalitionId];
+    vector<int> coalitionParties = getPartiesByCoalitions()[coalitionId];
     int coalitionSize = getPartiesByCoalitions()[coalitionId].size();
     for (int i=0; i<coalitionSize; i++){
         if (getPartiesByCoalitions()[coalitionId][i] == partyId){

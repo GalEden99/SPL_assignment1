@@ -102,46 +102,31 @@ void Agent::step(Simulation &sim)
     int numParties = sim.getGraph().getNumVertices();
     
     for (int i=0; i<numParties; i++){
-        // checking if i is a neighbor
-        if (sim.getGraph().getEdgeWeight(mPartyId, i) != 0) {
-            
-            Party checkedParty = sim.getParty(i);
-
-            // checking if i status is Waiting
-            if (checkedParty.getState() == Waiting){
-
-                // add to mRelevantParties
-                 mRelevantParties.push_back(checkedParty);
-            }
-            
-            // checking if i status is CollectingOffers
-            else if (checkedParty.getState() == CollectingOffers)
-            {   
-
-                if (!checkedParty.checkOffers(mPartyId, mCoalitionId, sim)){ // if the party didn't get an offer from another agent from the same party
-                    
-                    // add to mRelevantParties
-                    mRelevantParties.push_back(checkedParty);
-
+        // checking if i is a neighbor of the agent's party
+            const Party &checkedParty = sim.getParty(i);
+            switch (checkedParty.getState())
+            {
+            case Joined:
+                break;
+            case Waiting:
+                if (sim.getGraph().getEdgeWeight(mPartyId, i) != 0) {
+                    mRelevantParties.push_back(i);
                 }
-            }
+                break;
+            case CollectingOffers:
 
+                 if (sim.getGraph().getEdgeWeight(mPartyId, i) != 0) {
+                    if(!checkedParty.checkOffers(mPartyId, mCoalitionId, sim)){
+                        mRelevantParties.push_back(i);
+                    }
+                }
+                break;
+            }
         }
-    }
     
     // activing selection polity and getting the selected party
     int selectedPartyId = mSelectionPolicy->Select(mPartyId, mRelevantParties, sim);
-
-    // // if there is a selected party ??? לא מתעדכן 
-    // if (selectedPartId > -1){
-    //     Party selectedParty = sim.getParty(selectedPartId);
-    //     if (selectedParty.getState() == Waiting){
-
-    //         selectedPartId->setState(CollectingOffers);
-    //     }
-    // }
-
-    // adding our agent to the offers vectors of the selected party (if there is one)
+    // addng our agent to the offers vectors of the selected party (if there is one)
     if (selectedPartyId > -1){
         sim.addOffer(selectedPartyId, *this);
     }
@@ -151,51 +136,39 @@ void Agent::step(Simulation &sim)
 
 
 // this function cant return a party, only the id of the party 
-int MandatesSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelevantParties, Simulation &sim){
+int MandatesSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantParties, Simulation &sim){
     int maxMandates = -1;
-    Party *maxMandatesParty = 0; 
+    // Party *maxMandatesParty = 0; 
     int tempSize = mRelevantParties.size();
     for (int i=0; i<tempSize; i++){
-    
-        if (maxMandates<mRelevantParties[i].getMandates()){
-            maxMandates = mRelevantParties[i].getMandates();
-            maxMandatesParty = &mRelevantParties[i];
+        int tempMandates = sim.getParty(mRelevantParties[i]).getMandates();
+        if (maxMandates<tempMandates){
+            maxMandates = tempMandates;
+            // maxMandatesParty = &mRelevantParties[i];
         }
     }
 
-    if (maxMandatesParty != 0){
-        return maxMandatesParty->getId();
-    }
-    else{
-        return -1; // no party was selected
-    }
+    return maxMandates;
     //return maxMandatesParty; // return a ptr to the party with max num of mandates 
 }
 
 
 // this function cant return a party, only the id of the party
-int EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelevantParties, Simulation &sim){
+int EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantParties, Simulation &sim){
         int maxEdgeWeight = -1;
-        Party *maxEdgeWeightParty = 0;
+        // Party *maxEdgeWeightParty = 0;
         int tempSize =  mRelevantParties.size();
         for (int i=0; i<tempSize; i++){
             
-            int currPartyId = mRelevantParties[i].getId();
-            int currWeight = sim.getGraph().getEdgeWeight(agentPartyId, currPartyId);
+            int currWeight = sim.getGraph().getEdgeWeight(agentPartyId, mRelevantParties[i]);
 
             if (maxEdgeWeight<currWeight){
                 maxEdgeWeight = currWeight;
-                maxEdgeWeightParty = &mRelevantParties[i];
         }
     }
 
-    if (maxEdgeWeightParty != 0){
-        return maxEdgeWeightParty->getId();
-    }
-    else{
-        return -1; // no party was selected
-    }
-    //return maxEdgeWeightParty; // return a ptr to the party with max Edge Weight
+        return maxEdgeWeight; 
+
 }
 
 

@@ -33,7 +33,7 @@ class Party
         void step(Simulation &s);
         const string &getName() const;
         const vector<int> getOffers() const;
-        bool checkOffers(int partyId, int coalitionId, Simulation &sim);
+        bool checkOffers(int partyId, int coalitionId, Simulation &sim) const;
         int getId() const;
         void addOffer(Agent &newAgentOffer);
         JoinPolicy *getJoinPolicy() const;
