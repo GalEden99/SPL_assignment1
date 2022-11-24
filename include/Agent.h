@@ -27,7 +27,7 @@ public:
     void setCoalitionId(int coalitionId);
     void setId(int newAgentId);
     void setPartyId(int newPartyId);
-    int getCoalitionId()const ;
+    int getCoalitionId() const;
 
 
 private:

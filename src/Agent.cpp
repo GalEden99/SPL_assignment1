@@ -12,7 +12,7 @@ mAgentId(agentId), mPartyId(partyId), mSelectionPolicy(selectionPolicy){}
 
 // copy cunstractor
 Agent::Agent(const Agent &other):mAgentId(other.mAgentId), mPartyId(other.mPartyId), mSelectionPolicy(other.mSelectionPolicy){
-        mCoalitionId =-1;
+        mCoalitionId = other.mCoalitionId;
         //deep copy of vector
         int OtherSize = other.mRelevantParties.size();
         for(int i = 0; i<OtherSize;i++){
@@ -132,9 +132,15 @@ void Agent::step(Simulation &sim)
     // activing selection polity and getting the selected party
     Party *selectedParty = mSelectionPolicy->Select(mPartyId, mRelevantParties, sim);
 
+    // if there is a selected party ??? לא מתעדכן 
+    if (selectedParty != nullptr){
+        if (selectedParty->getState() == Waiting){
+            selectedParty->setState(CollectingOffers);
+        }
+    }
+
     // adding our agent to the offers vectors of the selected party
     selectedParty->addOffer(*this);
-
 
 }
 
