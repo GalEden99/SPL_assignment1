@@ -159,7 +159,7 @@ int MandatesSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantPart
 }
 
 
-// this function cant return a party, only the id of the party
+// this function cant return a party, only the id of the party 
 int EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantParties, Simulation &sim){
     int maxEdgeWeight = -1;
     int selectedPartyId = -1;
