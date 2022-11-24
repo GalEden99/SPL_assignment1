@@ -37,6 +37,7 @@ class Party
         int getId() const;
         void addOffer(Agent &newAgentOffer);
         JoinPolicy *getJoinPolicy() const;
+        
 
     private:
         int mId;
