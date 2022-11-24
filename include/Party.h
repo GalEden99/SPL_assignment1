@@ -32,8 +32,8 @@ class Party
         int getMandates() const;
         void step(Simulation &s);
         const string &getName() const;
-        const vector<Agent> getOffers() const;
-        bool checkOffers(Party checkedParty, int partyId);
+        const vector<int> getOffers() const;
+        bool checkOffers(int partyId, int coalitionId, Simulation &sim);
         int getId() const;
         void addOffer(Agent &newAgentOffer);
         JoinPolicy *getJoinPolicy() const;
@@ -46,5 +46,5 @@ class Party
         JoinPolicy *mJoinPolicy;
         State mState;
         int mIteration=0;
-        vector<Agent> mOffers={};
+        vector<int> mOffers={};
 };

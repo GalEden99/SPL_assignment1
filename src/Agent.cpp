@@ -118,7 +118,7 @@ void Agent::step(Simulation &sim)
             else if (checkedParty.getState() == CollectingOffers)
             {   
 
-                if (!checkedParty.checkOffers(checkedParty, mPartyId)){ //checkOffers לממש את 
+                if (!checkedParty.checkOffers(mPartyId, mCoalitionId, sim)){ // if the party didn't get an offer from another agent from the same party
                     
                     // add to mRelevantParties
                     mRelevantParties.push_back(checkedParty);
@@ -130,24 +130,28 @@ void Agent::step(Simulation &sim)
     }
     
     // activing selection polity and getting the selected party
-    Party *selectedParty = mSelectionPolicy->Select(mPartyId, mRelevantParties, sim);
+    int selectedPartyId = mSelectionPolicy->Select(mPartyId, mRelevantParties, sim);
 
-    // if there is a selected party ??? לא מתעדכן 
-    if (selectedParty != nullptr){
-        if (selectedParty->getState() == Waiting){
-            selectedParty->setState(CollectingOffers);
-        }
+    // // if there is a selected party ??? לא מתעדכן 
+    // if (selectedPartId > -1){
+    //     Party selectedParty = sim.getParty(selectedPartId);
+    //     if (selectedParty.getState() == Waiting){
+
+    //         selectedPartId->setState(CollectingOffers);
+    //     }
+    // }
+
+    // adding our agent to the offers vectors of the selected party (if there is one)
+    if (selectedPartyId > -1){
+        sim.addOffer(selectedPartyId, *this);
     }
-
-    // adding our agent to the offers vectors of the selected party
-    selectedParty->addOffer(*this);
 
 }
 
 
 
-
-Party* MandatesSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelevantParties, Simulation &sim){
+// this function cant return a party, only the id of the party 
+int MandatesSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelevantParties, Simulation &sim){
     int maxMandates = -1;
     Party *maxMandatesParty = 0; 
     int tempSize = mRelevantParties.size();
@@ -158,12 +162,19 @@ Party* MandatesSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelevan
             maxMandatesParty = &mRelevantParties[i];
         }
     }
-    return maxMandatesParty; // return a ptr to the party with max num of mandates 
+
+    if (maxMandatesParty != 0){
+        return maxMandatesParty->getId();
+    }
+    else{
+        return -1; // no party was selected
+    }
+    //return maxMandatesParty; // return a ptr to the party with max num of mandates 
 }
 
 
-
-Party* EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelevantParties, Simulation &sim){
+// this function cant return a party, only the id of the party
+int EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelevantParties, Simulation &sim){
         int maxEdgeWeight = -1;
         Party *maxEdgeWeightParty = 0;
         int tempSize =  mRelevantParties.size();
@@ -177,7 +188,14 @@ Party* EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<Party> &mRelev
                 maxEdgeWeightParty = &mRelevantParties[i];
         }
     }
-    return maxEdgeWeightParty; // return a ptr to the party with max Edge Weight
+
+    if (maxEdgeWeightParty != 0){
+        return maxEdgeWeightParty->getId();
+    }
+    else{
+        return -1; // no party was selected
+    }
+    //return maxEdgeWeightParty; // return a ptr to the party with max Edge Weight
 }
 
 

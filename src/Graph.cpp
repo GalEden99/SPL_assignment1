@@ -25,3 +25,9 @@ const Party &Graph::getParty(int partyId) const
 {
     return mVertices[partyId];
 }
+
+void Graph::addOffer(int selectedPartyId, Agent& newAgentOffer){
+    // add the offer to the party's offers vector
+    mVertices[selectedPartyId].addOffer(newAgentOffer);
+    
+}
