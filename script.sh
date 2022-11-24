@@ -1,15 +1,21 @@
-make
+#!/bin/sh
 
-bin/cRace tests/01.json
-bin/cRace tests/02.json
-bin/cRace tests/03.json
+bin/cRace customTests/shouldTerminate1.json
+bin/cRace customTests/shouldTerminate2.json
+bin/cRace customTests/lastJoinPolicy1.json
+bin/cRace customTests/mandatesJoinPolicy2.json
+bin/cRace customTests/mandatesJoinPolicy3.json
+bin/cRace customTests/EdgeSelectionPolicy1.json
+bin/cRace customTests/EdgeSelectionPolicy2.json
+bin/cRace customTests/MandatesSelectionPolicy1.json
+bin/cRace customTests/MandatesSelectionPolicy2.json
 
-
-
-diff -s tests/01_sol.out tests/01.out
-diff -s tests/02_sol.out tests/02.out
-diff -s tests/03_sol.out tests/03.out
-
-
-
-
+diff -s customTests/shouldTerminate1_sol.out customTests/shouldTerminate1.out
+diff -s customTests/shouldTerminate2_sol.out customTests/shouldTerminate2.out
+diff -s customTests/lastJoinPolicy1_sol.out customTests/lastJoinPolicy1.out
+diff -s customTests/mandatesJoinPolicy2_sol.out customTests/mandatesJoinPolicy2.out
+diff -s customTests/mandatesJoinPolicy3_sol.out customTests/mandatesJoinPolicy3.out
+diff -s customTests/EdgeSelectionPolicy1_sol.out customTests/EdgeSelectionPolicy1.out
+diff -s customTests/EdgeSelectionPolicy2_sol.out customTests/EdgeSelectionPolicy2.out
+diff -s customTests/MandatesSelectionPolicy1_sol.out customTests/MandatesSelectionPolicy1.out
+diff -s customTests/MandatesSelectionPolicy2_sol.out customTests/MandatesSelectionPolicy2.out

@@ -20,26 +20,12 @@ int main(int argc, char **argv)
     // run simulation and store json state after each iteration
     vector<json> outPerIter = {Parser::makeJson(simulation)};
 
-    //~~
-    int i = 0;
-    cout << i << endl;
-    //~~
-
     while (!simulation.shouldTerminate())
     {
-        //~~
-        i++;
-        cout << "STARTING round" << i << endl;
-        //~~
         simulation.step();
         outPerIter.push_back(Parser::makeJson(simulation));
     }
     
-    
-    //~~
-    cout << "Simulation terminated after" << i << " iterations" << endl;
-    //~~
-
     // writing the outputs list to a file
     const string output_path = config_path.substr(0, config_path.find_last_of('.')) + ".out";
     std::ofstream outputFile(output_path);

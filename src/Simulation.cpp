@@ -9,13 +9,11 @@ Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgen
     int tempSize = mAgents.size();
     for (int i=0; i<tempSize; i++){
         mAgents[i].setCoalitionId(i);
-        //
         int currAgentPartyId = mAgents[i].getPartyId();
         Party currAgentParty = mGraph.getParty(currAgentPartyId);
         int newMandates = currAgentParty.getMandates();
         mCoalitionSize.push_back(newMandates);
     }
-
 }
 
 void Simulation::step()
@@ -28,8 +26,6 @@ void Simulation::step()
     // apply Agent::step() for each agent in mAgents
     int tempSize = mAgents.size();
     for (int i=0; i<tempSize; i++){
-        // Agent currAgent = mAgents[i];
-        // currAgent.step(*this);
         mAgents[i].step(temp);
     }
 }
@@ -57,7 +53,6 @@ bool Simulation::shouldTerminate() const
         }
 
         return false;
-    // return mAgents.size() == mGraph.getNumVertices();
 }
 
 const Graph &Simulation::getGraph() const
@@ -90,7 +85,6 @@ void Simulation::addAgent(Agent newAgent){
 }
 
 void Simulation::updateCoalitionSize(int coalitionId, int mMandates){
-    // getCoalitionSize()[coalitionId] =+ mMandates;
     mCoalitionSize[coalitionId] += mMandates;
 }
 
@@ -103,9 +97,9 @@ void Simulation::addOffer(int selectedPartyId, Agent& newAgentOffer){
     mGraph.addOffer(selectedPartyId, newAgentOffer, *this);
 }
 
-bool Simulation::checkOffers(int coalitionId, vector<int> mOffers) //נקבל את ( int coalitionId, mOffers={agentId1, ...})
+bool Simulation::checkOffers(int coalitionId, vector<int> mOffers) 
 {
-    // נעבור על כל הסוכנים ונבדוק האם אחד מהם מאותה קואליציה כמו קואלישין ID 
+    // check if the offer is already been made by another agent from the same coalition
     int tempSize = mOffers.size();
     for (int i=0; i<tempSize; i++){
         int currAgentId = mOffers[i];
@@ -126,5 +120,5 @@ const vector<vector<int>> Simulation::getPartiesByCoalitions() const
     for(int i = 0; i<agentSize;i++){
         partiesByCoalition[mAgents[i].getCoalitionId()].push_back(mAgents[i].getPartyId());
     }
-    return partiesByCoalition; // ?
+    return partiesByCoalition; 
 }
