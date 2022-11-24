@@ -14,7 +14,7 @@ public:
     int getEdgeWeight(int v1, int v2) const;
     int getNumVertices() const;
     const Party &getParty(int partyId) const;
-    void addOffer(int selectedPartyId, Agent& newAgentOffer);
+    void addOffer(int selectedPartyId, Agent& newAgentOffer, Simulation &sim);
     void partiesStep(Simulation &);
 
 private:

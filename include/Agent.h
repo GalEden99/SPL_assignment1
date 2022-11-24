@@ -28,6 +28,7 @@ public:
     void setId(int newAgentId);
     void setPartyId(int newPartyId);
     int getCoalitionId() const;
+    void clearReleventParties();
 
 
 private:

@@ -1,3 +1,9 @@
+#include <iostream>
+#include <iomanip>
+using std::cout;
+using std::endl;
+//      //
+
 #include "Party.h"
 #include "Agent.h"
 #include "JoinPolicy.h"
@@ -103,20 +109,34 @@ JoinPolicy* Party::getJoinPolicy() const {
     return mJoinPolicy;
 }
 
-void Party::addOffer(Agent &newAgentOffer){
+void Party::addOffer(Agent &newAgentOffer, Simulation &sim){
     // check if we need to update its state: waiting->collecting offers
+    /// 
+    //cout <<"        ENTER addOffer:" << endl;
+    /// 
+
     if(mState == Waiting){
+        /// 
+        //cout << "       party " << mId << "    updated its state" << endl;
+        /// 
         mState = CollectingOffers;
         mIteration+=1;
     }
+
     // add the offer to the party's offers vector
-    mOffers.push_back(newAgentOffer.getId());
+    if (!sim.checkOffers(newAgentOffer.getCoalitionId(), mOffers)){
+        mOffers.push_back(newAgentOffer.getId());
+        //   //
+        //cout << "       party " << mId << " is getting offer by " << newAgentOffer.getPartyId() << endl;
+        /// 
+    } 
+    
 }
 
 
-bool Party::checkOffers(int partyId, int coalitionId, Simulation &sim) const
+bool Party::checkOffers( int coalitionId, vector<int> mOffers, Simulation &sim) const
 {
-    return sim.checkOffers(partyId, coalitionId);
+    return sim.checkOffers(coalitionId, mOffers);
     
 }
 
@@ -138,6 +158,7 @@ void Party::step(Simulation &s)
 
             newAgent.setId(s.getAgents().size());
             newAgent.setPartyId(mId);
+            newAgent.clearReleventParties();
 
             //add mandates to mCoalitionSize
             s.updateCoalitionSize(newAgent.getCoalitionId(), mMandates);
@@ -170,6 +191,7 @@ int MandatesJoinPolicy::Join(vector<int> &mOffers, Simulation &sim){
 
 
 int LastOfferJoinPolicy::Join(vector<int> &mOffers, Simulation &sim){
+
     int lastOfferAgent = mOffers[mOffers.size()-1];
     return lastOfferAgent;
 }
