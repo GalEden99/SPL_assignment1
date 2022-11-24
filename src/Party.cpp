@@ -1,9 +1,3 @@
-#include <iostream>
-#include <iomanip>
-using std::cout;
-using std::endl;
-//      //
-
 #include "Party.h"
 #include "Agent.h"
 #include "JoinPolicy.h"
@@ -34,7 +28,7 @@ Party::Party(Party &&other):mId(other.mId), mName(other.mName), mMandates(other.
     other.mJoinPolicy = nullptr;
 }
 
-// move assignment cunstractor
+// move assignment 
 Party &Party :: operator=(Party &&other){
    if(mJoinPolicy){delete mJoinPolicy;}
     mId = other.mId;
@@ -110,34 +104,22 @@ JoinPolicy* Party::getJoinPolicy() const {
 }
 
 void Party::addOffer(Agent &newAgentOffer, Simulation &sim){
-    // check if we need to update its state: waiting->collecting offers
-    /// 
-    //cout <<"        ENTER addOffer:" << endl;
-    /// 
-
+   
     if(mState == Waiting){
-        /// 
-        //cout << "       party " << mId << "    updated its state" << endl;
-        /// 
         mState = CollectingOffers;
         mIteration+=1;
     }
 
     // add the offer to the party's offers vector
     if (!sim.checkOffers(newAgentOffer.getCoalitionId(), mOffers)){
-        mOffers.push_back(newAgentOffer.getId());
-        //   //
-        //cout << "       party " << mId << " is getting offer by " << newAgentOffer.getPartyId() << endl;
-        /// 
+        mOffers.push_back(newAgentOffer.getId()); 
     } 
     
 }
 
-
 bool Party::checkOffers( int coalitionId, vector<int> mOffers, Simulation &sim) const
 {
     return sim.checkOffers(coalitionId, mOffers);
-    
 }
 
 void Party::step(Simulation &s)
@@ -145,7 +127,7 @@ void Party::step(Simulation &s)
     // Check if the status is collectingOffers and update the itaeration timer
     if (getState() == CollectingOffers){
         if (mIteration<3){
-            mIteration = mIteration+1; // update the iteration timer wont work~~~~~~~~~~~~~~~~~~~~~~~
+            mIteration = mIteration+1; 
         } else {
             // iteration = 3, apply JoinPolicy
             int choosenAgent = mJoinPolicy->Join(mOffers, s);
@@ -167,14 +149,8 @@ void Party::step(Simulation &s)
             s.addAgent(newAgent);
 
         }
-    }
-
-    
+    } 
  }
-
-
-
-/////
 
 int MandatesJoinPolicy::Join(vector<int> &mOffers, Simulation &sim){
     int bestOfferAgent = -1;
@@ -189,9 +165,7 @@ int MandatesJoinPolicy::Join(vector<int> &mOffers, Simulation &sim){
     return bestOfferAgent;
 }
 
-
 int LastOfferJoinPolicy::Join(vector<int> &mOffers, Simulation &sim){
-
     int lastOfferAgent = mOffers[mOffers.size()-1];
     return lastOfferAgent;
 }

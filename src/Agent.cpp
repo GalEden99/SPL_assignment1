@@ -30,7 +30,7 @@ Agent::Agent(Agent &&other):mAgentId(other.mAgentId), mPartyId(other.mPartyId), 
 }
 
 
-// move assignment cunstractor
+// move assignment 
 Agent &Agent :: operator=(Agent &&other){
    if(mSelectionPolicy){delete mSelectionPolicy;}
     mAgentId = other.mAgentId;
@@ -43,7 +43,7 @@ Agent &Agent :: operator=(Agent &&other){
     return *this;
 }
 
-// copy assignment cunstractor
+// copy assignment 
 Agent &Agent :: operator=(const Agent &other){
     if(this!=&other){
         mAgentId = other.mAgentId;
@@ -106,7 +106,7 @@ void Agent::step(Simulation &sim)
     int numParties = sim.getGraph().getNumVertices();
     
     for (int i=0; i<numParties; i++){
-        // checking if i is a neighbor of the agent's party
+            // checking if i is a neighbor of the agent's party
             const Party &checkedParty = sim.getParty(i);
             switch (checkedParty.getState())
             {
@@ -130,6 +130,7 @@ void Agent::step(Simulation &sim)
     
     // activing selection polity and getting the selected party
     int selectedPartyId = mSelectionPolicy->Select(mPartyId, mRelevantParties, sim);
+
     // addng our agent to the offers vectors of the selected party (if there is one)
     if (selectedPartyId > -1){
         sim.addOffer(selectedPartyId, *this);
@@ -137,7 +138,6 @@ void Agent::step(Simulation &sim)
 
     // clearing the mRelevantParties vector for the next step
     mRelevantParties = {};
-
 }
 
 
@@ -145,38 +145,34 @@ void Agent::step(Simulation &sim)
 // this function cant return a party, only the id of the party 
 int MandatesSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantParties, Simulation &sim){
     int maxMandates = -1;
-    // Party *maxMandatesParty = 0; 
+    int maxMandatesPartyId = -1; 
     int tempSize = mRelevantParties.size();
     for (int i=0; i<tempSize; i++){
         int tempMandates = sim.getParty(mRelevantParties[i]).getMandates();
         if (maxMandates<tempMandates){
             maxMandates = tempMandates;
-            // maxMandatesParty = &mRelevantParties[i];
+            maxMandatesPartyId = mRelevantParties[i];
         }
     }
 
-    return maxMandates;
-    //return maxMandatesParty; // return a ptr to the party with max num of mandates 
+    return maxMandatesPartyId;
 }
 
 
 // this function cant return a party, only the id of the party
 int EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantParties, Simulation &sim){
-        int maxEdgeWeight = -1;
-        int selectedPartyId = -1;
-        int tempSize =  mRelevantParties.size();
-        for (int i=0; i<tempSize; i++){
-            
-            int currWeight = sim.getGraph().getEdgeWeight(agentPartyId, mRelevantParties[i]);
+    int maxEdgeWeight = -1;
+    int selectedPartyId = -1;
+    int tempSize =  mRelevantParties.size();
+    for (int i=0; i<tempSize; i++){
+        int currWeight = sim.getGraph().getEdgeWeight(agentPartyId, mRelevantParties[i]);
 
-            if (maxEdgeWeight<currWeight){
-                maxEdgeWeight = currWeight;
-                selectedPartyId = mRelevantParties[i];
+        if (maxEdgeWeight<currWeight){
+            maxEdgeWeight = currWeight;
+            selectedPartyId = mRelevantParties[i];
         }
     }
-
-        return selectedPartyId; 
-
+    return selectedPartyId; 
 }
 
 
