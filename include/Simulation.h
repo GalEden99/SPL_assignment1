@@ -27,6 +27,9 @@ public:
     vector<int> getCoalitionSize();
     void addAgent(Agent newAgent);
     void updateCoalitionSize(int CoalitionId, int mMandates);
+    const Agent& getAgent(int agentId);
+    void addOffer(int selectedPartyId, Agent& newAgentOffer);
+    bool checkOffers(int partyId, int coalitionId);
 
 
 

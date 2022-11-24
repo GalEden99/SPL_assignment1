@@ -91,7 +91,7 @@ const string & Party::getName() const
     return mName;
 }
 
-const vector<Agent> Party::getOffers() const{
+const vector<int> Party::getOffers() const{
     return mOffers;
 }
 
@@ -104,16 +104,18 @@ JoinPolicy* Party::getJoinPolicy() const {
 }
 
 void Party::addOffer(Agent &newAgentOffer){
-    mOffers.push_back(newAgentOffer);
+    // check if we need to update its state: waiting->collecting offers
+    if(mState == Waiting){
+        mState = CollectingOffers;
+    }
+    // add the offer to the party's offers vector
+    mOffers.push_back(newAgentOffer.getId());
 }
 
-bool Party::checkOffers(Party checkedParty, int partyId) 
+
+bool Party::checkOffers(int partyId, int coalitionId, Simulation &sim) 
 {
-    int OfferSize=checkedParty.getOffers().size();
-    for (int i=0; i<OfferSize; i++){
-        //
-    }
-    return true;
+    return sim.checkOffers(partyId, coalitionId);
     
 }
 
@@ -122,25 +124,25 @@ void Party::step(Simulation &s)
     // Check if the status is collectingOffers and update the itaeration timer
     if (getState() == CollectingOffers){
         if (mIteration<3){
-            mIteration = mIteration+1;
+            mIteration = mIteration+1; // update the iteration timer wont work~~~~~~~~~~~~~~~~~~~~~~~
         } else {
             // iteration = 3, apply JoinPolicy
-            Agent *choosenAgent = mJoinPolicy->Join(mOffers, s);
+            int choosenAgent = mJoinPolicy->Join(mOffers, s);
 
             // set state to Joined
             setState(Joined);
 
             // clone agent
-            Agent *newAgent = choosenAgent;
+            Agent newAgent = s.getAgent(choosenAgent);
 
-            newAgent->setId(s.getAgents().size());
-            newAgent->setPartyId(mId);
+            newAgent.setId(s.getAgents().size());
+            newAgent.setPartyId(mId);
 
             //add mandates to mCoalitionSize
-            s.updateCoalitionSize(newAgent->getCoalitionId(), mMandates);
+            s.updateCoalitionSize(newAgent.getCoalitionId(), mMandates);
 
             //add to agents vector in the simulation
-            s.addAgent(*newAgent);
+            s.addAgent(newAgent);
 
         }
     }
@@ -152,22 +154,22 @@ void Party::step(Simulation &s)
 
 /////
 
-Agent* MandatesJoinPolicy::Join(vector<Agent> &mOffers, Simulation &sim){
-    Agent *bestOfferAgent = 0;
+int MandatesJoinPolicy::Join(vector<int> &mOffers, Simulation &sim){
+    int bestOfferAgent = -1;
     int maxMandates = 0;
     int tempSize = mOffers.size();
     for (int i=0; i<tempSize; i++){
         if (maxMandates<sim.getCoalitionSize()[i]){
             maxMandates = sim.getCoalitionSize()[i];
-            bestOfferAgent = &mOffers[i];
+            bestOfferAgent = mOffers[i];
         }
     }
     return bestOfferAgent;
 }
 
 
-Agent* LastOfferJoinPolicy::Join(vector<Agent> &mOffers, Simulation &sim){
-    Agent *lastOfferAgent = &mOffers[mOffers.size()-1];
+int LastOfferJoinPolicy::Join(vector<int> &mOffers, Simulation &sim){
+    int lastOfferAgent = mOffers[mOffers.size()-1];
     return lastOfferAgent;
 }
 

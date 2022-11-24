@@ -87,6 +87,11 @@ vector<Agent> Simulation::GetAgents() const
     return mAgents;
 }
 
+const Agent& Simulation::getAgent(int agentId)
+{
+    return mAgents[agentId];
+}
+
 
 const Party &Simulation::getParty(int partyId) const
 {
@@ -105,6 +110,22 @@ vector<int> Simulation::getCoalitionSize(){
     return mCoalitionSize;
 }
 
+void Simulation::addOffer(int selectedPartyId, Agent& newAgentOffer){
+    // add the offer to the party's offers vector
+    mGraph.addOffer(selectedPartyId, newAgentOffer);
+}
+
+bool Simulation::checkOffers(int partyId, int coalitionId) 
+{
+    //vector<int> coalitionParties = getPartiesByCoalitions()[coalitionId];
+    int coalitionSize = getPartiesByCoalitions()[coalitionId].size();
+    for (int i=0; i<coalitionSize; i++){
+        if (getPartiesByCoalitions()[coalitionId][i] == partyId){
+            return true; // an offer was found
+        }
+    } return false; // no offer was found
+}
+
 /// This method returns a "coalition" vector, where each element is a vector of party IDs in the coalition.
 /// At the simulation initialization - the result will be [[agent0.partyId], [agent1.partyId], ...]
 const vector<vector<int>> Simulation::getPartiesByCoalitions() const
@@ -114,5 +135,5 @@ const vector<vector<int>> Simulation::getPartiesByCoalitions() const
     for(int i = 0; i<agentSize;i++){
         partiesByCoalition[mAgents[i].getCoalitionId()].push_back(mAgents[i].getPartyId());
     }
-    return vector<vector<int>>();
+    return partiesByCoalition; // ?
 }
