@@ -3,7 +3,7 @@
         {
             "cwd": "/home/spl211/SPL23_Assignment1/Skeleton/bin",
             "binaryPath": "/home/spl211/SPL23_Assignment1/Skeleton/bin/cRace",
-            "binaryArgs": ["../tests/01.json"]
+            "binaryArgs": ["../tests/02.json"]
         }
     ],
     "files.associations": {

@@ -31,3 +31,10 @@ void Graph::addOffer(int selectedPartyId, Agent& newAgentOffer){
     mVertices[selectedPartyId].addOffer(newAgentOffer);
     
 }
+
+void Graph :: partiesStep(Simulation &sim){
+    int size = mVertices.size();
+    for (int i=0; i<size; i++){
+        mVertices[i].step(sim);
+    }
+}

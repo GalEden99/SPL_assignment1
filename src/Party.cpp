@@ -107,13 +107,14 @@ void Party::addOffer(Agent &newAgentOffer){
     // check if we need to update its state: waiting->collecting offers
     if(mState == Waiting){
         mState = CollectingOffers;
+        mIteration+=1;
     }
     // add the offer to the party's offers vector
     mOffers.push_back(newAgentOffer.getId());
 }
 
 
-bool Party::checkOffers(int partyId, int coalitionId, Simulation &sim) 
+bool Party::checkOffers(int partyId, int coalitionId, Simulation &sim) const
 {
     return sim.checkOffers(partyId, coalitionId);
     
@@ -133,7 +134,7 @@ void Party::step(Simulation &s)
             setState(Joined);
 
             // clone agent
-            Agent newAgent = s.getAgent(choosenAgent);
+            Agent newAgent(s.getAgent(choosenAgent));
 
             newAgent.setId(s.getAgents().size());
             newAgent.setPartyId(mId);
