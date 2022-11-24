@@ -108,7 +108,8 @@ bool Simulation::checkOffers(int coalitionId, vector<int> mOffers) //נקבל א
     // נעבור על כל הסוכנים ונבדוק האם אחד מהם מאותה קואליציה כמו קואלישין ID 
     int tempSize = mOffers.size();
     for (int i=0; i<tempSize; i++){
-        if (mAgents[i].getCoalitionId() == coalitionId){
+        int currAgentId = mOffers[i];
+        if (getAgent(currAgentId).getCoalitionId() == coalitionId){ //
             return true; //already been offered 
         }
     }

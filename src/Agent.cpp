@@ -135,6 +135,9 @@ void Agent::step(Simulation &sim)
         sim.addOffer(selectedPartyId, *this);
     }
 
+    // clearing the mRelevantParties vector for the next step
+    mRelevantParties = {};
+
 }
 
 
