@@ -96,6 +96,10 @@ int Agent::getCoalitionId() const{
     return mCoalitionId;
 }
 
+void Agent::clearReleventParties(){
+    mRelevantParties = {};
+}
+
 void Agent::step(Simulation &sim)
 {
     // building the mRelevantParties parties' vector to make an offer to
@@ -116,7 +120,7 @@ void Agent::step(Simulation &sim)
             case CollectingOffers:
 
                  if (sim.getGraph().getEdgeWeight(mPartyId, i) != 0) {
-                    if(!checkedParty.checkOffers(mPartyId, mCoalitionId, sim)){
+                    if(!checkedParty.checkOffers(mCoalitionId, checkedParty.getOffers(), sim)){
                         mRelevantParties.push_back(i);
                     }
                 }
@@ -156,7 +160,7 @@ int MandatesSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantPart
 // this function cant return a party, only the id of the party
 int EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantParties, Simulation &sim){
         int maxEdgeWeight = -1;
-        // Party *maxEdgeWeightParty = 0;
+        int selectedPartyId = -1;
         int tempSize =  mRelevantParties.size();
         for (int i=0; i<tempSize; i++){
             
@@ -164,10 +168,11 @@ int EdgeWeightSelectionPolicy::Select(int agentPartyId, vector<int> &mRelevantPa
 
             if (maxEdgeWeight<currWeight){
                 maxEdgeWeight = currWeight;
+                selectedPartyId = mRelevantParties[i];
         }
     }
 
-        return maxEdgeWeight; 
+        return selectedPartyId; 
 
 }
 

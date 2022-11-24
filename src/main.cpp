@@ -21,15 +21,15 @@ int main(int argc, char **argv)
     vector<json> outPerIter = {Parser::makeJson(simulation)};
 
     //~~
-    int i = 0;
-    cout << i << endl;
+    //int i = 0;
+    //cout << i << endl;
     //~~
 
     while (!simulation.shouldTerminate())
     {
         //~~
-        i++;
-        cout << "round" << i << endl;
+        //i++;
+        //cout << "round" << i << endl;
         //~~
         simulation.step();
         outPerIter.push_back(Parser::makeJson(simulation));
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     
     
     //~~
-    cout << "Simulation terminated after" << i << " iterations" << endl;
+    //cout << "Simulation terminated after" << i << " iterations" << endl;
     //~~
 
     // writing the outputs list to a file

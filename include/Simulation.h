@@ -29,7 +29,7 @@ public:
     void updateCoalitionSize(int CoalitionId, int mMandates);
     const Agent& getAgent(int agentId);
     void addOffer(int selectedPartyId, Agent& newAgentOffer);
-    bool checkOffers(int partyId, int coalitionId);
+    bool checkOffers(int coalitionId, vector<int> mOffers);
 
 
 

@@ -22,6 +22,7 @@ void Simulation::step()
 {
     auto &temp = *this;
 
+    // apply Party::step() for each party through the graph
     mGraph.partiesStep(temp);
 
     // apply Agent::step() for each agent in mAgents
@@ -31,9 +32,6 @@ void Simulation::step()
         // currAgent.step(*this);
         mAgents[i].step(temp);
     }
-
-
-
 }
 
 bool Simulation::shouldTerminate() const
@@ -102,18 +100,20 @@ vector<int> Simulation::getCoalitionSize(){
 
 void Simulation::addOffer(int selectedPartyId, Agent& newAgentOffer){
     // add the offer to the party's offers vector
-    mGraph.addOffer(selectedPartyId, newAgentOffer);
+    mGraph.addOffer(selectedPartyId, newAgentOffer, *this);
 }
 
-bool Simulation::checkOffers(int partyId, int coalitionId) 
+bool Simulation::checkOffers(int coalitionId, vector<int> mOffers) //נקבל את ( int coalitionId, mOffers={agentId1, ...})
 {
-    vector<int> coalitionParties = getPartiesByCoalitions()[coalitionId];
-    int coalitionSize = getPartiesByCoalitions()[coalitionId].size();
-    for (int i=0; i<coalitionSize; i++){
-        if (getPartiesByCoalitions()[coalitionId][i] == partyId){
-            return true; // an offer was found
+    // נעבור על כל הסוכנים ונבדוק האם אחד מהם מאותה קואליציה כמו קואלישין ID 
+    int tempSize = mOffers.size();
+    for (int i=0; i<tempSize; i++){
+        if (mAgents[i].getCoalitionId() == coalitionId){
+            return true; //already been offered 
         }
-    } return false; // no offer was found
+    }
+    return false; //not been offered yet
+
 }
 
 /// This method returns a "coalition" vector, where each element is a vector of party IDs in the coalition.
