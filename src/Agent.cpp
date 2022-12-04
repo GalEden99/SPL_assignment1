@@ -30,7 +30,7 @@ Agent::Agent(Agent &&other):mAgentId(other.mAgentId), mPartyId(other.mPartyId), 
 }
 
 
-// move assignment 
+// move assignment operator
 Agent &Agent :: operator=(Agent &&other){
    if(mSelectionPolicy){delete mSelectionPolicy;}
     mAgentId = other.mAgentId;
@@ -43,11 +43,12 @@ Agent &Agent :: operator=(Agent &&other){
     return *this;
 }
 
-// copy assignment 
+// copy assignment operator
 Agent &Agent :: operator=(const Agent &other){
     if(this!=&other){
         mAgentId = other.mAgentId;
         mPartyId = other.mPartyId;
+        /////////////////////////delete mSelectionPolicy;
         mSelectionPolicy = other.mSelectionPolicy->clone();
         mRelevantParties = other.mRelevantParties;
         mCoalitionId = other.mCoalitionId;

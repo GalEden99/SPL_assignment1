@@ -49,6 +49,7 @@ Party &Party :: operator=(const Party &other){
         mId = other.mId;
         mName = other.mName;
         mMandates = other.mMandates;
+        /////////////////////////delete mJoinPolicy;
         mJoinPolicy = other.mJoinPolicy->clone();
         mState = other.mState;
         mIteration = other.mIteration;
