@@ -1,0 +1,64 @@
+{
+  "parties": [
+    {
+      "name": "Bulbasaur",
+      "mandates": 15,
+      "join_policy": "L"
+    },
+    {
+      "name": "Charmander",
+      "mandates": 15,
+      "join_policy": "L"
+    },
+    {
+      "name": "Squirtle",
+      "mandates": 15,
+      "join_policy": "M"
+    },
+    {
+      "name": "Pikachu",
+      "mandates": 15,
+      "join_policy": "M"
+    },
+    {
+      "name": "Eevee",
+      "mandates": 10,
+      "join_policy": "L"
+    },
+    {
+      "name": "Snorlax",
+      "mandates": 20,
+      "join_policy": "L"
+    },
+    {
+      "name": "Mew",
+      "mandates": 15,
+      "join_policy": "M"
+    },
+    {
+      "name": "Mewtwo",
+      "mandates": 15,
+      "join_policy": "M"
+    }
+  ],
+  "graph": [
+    [0, 0, 2, 3, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 3],
+    [2, 0, 0, 0, 0, 1, 1, 0],
+    [3, 1, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 1, 2],
+    [0, 0, 1, 0, 0, 1, 0, 0],
+    [0, 3, 0, 0, 0, 2, 0, 0]
+  ],
+  "agents": [
+    {
+      "party_id": 0,
+      "selection_policy": "E"
+    },
+    {
+      "party_id": 5,
+      "selection_policy": "M"
+    }
+  ]
+}
